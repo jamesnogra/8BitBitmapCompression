@@ -91,8 +91,9 @@ namespace _8BitBitmapCompression
                 allPrefixCodes = new List<HuffmanDictionary>();
                 traverseHuffmanTreeForDictionary(theTree.First(), "");
             }
-            else //what if there is only one byte data
+            else //what if there is only one byte data, then the prefix code for that one item is '0'
             {
+                allPrefixCodes = new List<HuffmanDictionary>();
                 HuffmanDictionary oneItem;
                 tempData = theTree.First();
                 oneItem = new HuffmanDictionary(tempData.item, "0", tempData.totalCount);
@@ -102,6 +103,7 @@ namespace _8BitBitmapCompression
             MessageBox.Show(printAllHuffmanCodes());
         }
 
+        //this will be called recursively, only stops when reaches the leaves
         public void traverseHuffmanTreeForDictionary(HuffmanTreeData theTree, string currentPrefixCode)
         {
             HuffmanDictionary tempData;
@@ -199,7 +201,7 @@ namespace _8BitBitmapCompression
     public class ColorData
     {
         public byte colorCode;
-        public byte count;
+        public int count;
         public ColorData(byte colorCode)
         {
             this.colorCode = colorCode;
