@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,23 +40,31 @@ namespace _8BitBitmapCompression
 
         private void compressBtn_Click(object sender, EventArgs e)
         {
-            allColors = new List<ColorData>();
-            Color tempColor;
-
-            //iterate to the whole image (widthxheight)
-            for (int x=0; x<mainImage.Width; x++)
+            try
             {
-                for (int y=0; y<mainImage.Height; y++)
+                allColors = new List<ColorData>();
+                Color tempColor;
+
+                //iterate to the whole image (widthxheight)
+                for (int x = 0; x < mainImage.Width; x++)
                 {
-                    tempColor = mainImage.GetPixel(x, y);
-                    addColorOrIncreaseColorCount(tempColor.R);
-                    addColorOrIncreaseColorCount(tempColor.G);
-                    addColorOrIncreaseColorCount(tempColor.B);
+                    for (int y = 0; y < mainImage.Height; y++)
+                    {
+                        tempColor = mainImage.GetPixel(x, y);
+                        addColorOrIncreaseColorCount(tempColor.R);
+                        addColorOrIncreaseColorCount(tempColor.G);
+                        addColorOrIncreaseColorCount(tempColor.B);
+                    }
                 }
+                allColors = allColors.OrderBy(o => o.count).ToList();
+                createHuffmanTree();
+                //MessageBox.Show(printAllIAllColors());
+                createCompressedFile();
             }
-            allColors = allColors.OrderBy(o => o.count).ToList();
-            createHuffmanTree();
-            //MessageBox.Show(printAllIAllColors());
+            catch (Exception err)
+            {
+                MessageBox.Show("Error in compressing the image. Maybe there's no image set.");
+            }
         }
 
         private void createHuffmanTree()
@@ -100,7 +109,7 @@ namespace _8BitBitmapCompression
                 allPrefixCodes.Add(oneItem);
             }
             allPrefixCodes = allPrefixCodes.OrderByDescending(o => o.totalCount).ToList();
-            MessageBox.Show(printAllHuffmanCodes());
+            //MessageBox.Show(printAllHuffmanCodes());
         }
 
         //this will be called recursively, only stops when reaches the leaves
@@ -113,8 +122,69 @@ namespace _8BitBitmapCompression
                 allPrefixCodes.Add(tempData);
                 return;
             }
-            traverseHuffmanTreeForDictionary(theTree.left, ("0" + currentPrefixCode));
-            traverseHuffmanTreeForDictionary(theTree.right, ("1" + currentPrefixCode));
+            traverseHuffmanTreeForDictionary(theTree.left, (currentPrefixCode + "0"));
+            traverseHuffmanTreeForDictionary(theTree.right, (currentPrefixCode + "1"));
+        }
+
+        private void createCompressedFile()
+        {
+            Color tempColor;
+            string tempStr = "";
+            tempStr += Convert.ToString(mainImage.Width, 2).PadLeft(16, '0'); //16 bit for width
+            tempStr += Convert.ToString(mainImage.Height, 2).PadLeft(16, '0'); //16 bit for height
+            tempStr += Convert.ToString(allPrefixCodes.Count, 2).PadLeft(8, '0'); //8 bit for size of dictionary
+
+            //iterate through the prefix codes for dictionary
+            foreach (HuffmanDictionary i in allPrefixCodes)
+            {
+                tempStr += Convert.ToString(i.item, 2).PadLeft(8, '0'); //8 bit for color code
+                tempStr += Convert.ToString(i.prefixCode.Length, 2).PadLeft(4, '0'); //4 bit for the length of the prefix code
+                tempStr += i.prefixCode; //append the prefix code
+                //MessageBox.Show("Color Code: " + Convert.ToString(i.item, 2).PadLeft(8, '0') + "\nPrefix Code Length: " + Convert.ToString(i.prefixCode.Length, 2).PadLeft(4, '0') + "\nPrefix Code: " + i.prefixCode);
+            }
+
+            //convert the byte data of each pixel in the image to the corresponding prefix codes
+            for (int x = 0; x < mainImage.Width; x++)
+            {
+                for (int y = 0; y < mainImage.Height; y++)
+                {
+                    tempColor = mainImage.GetPixel(x, y);
+                    tempStr += getPrefixCodeOfColorData(tempColor.R);
+                    tempStr += getPrefixCodeOfColorData(tempColor.G);
+                    tempStr += getPrefixCodeOfColorData(tempColor.B);
+                }
+            }
+            //MessageBox.Show("Total Length: " + tempStr.Length + "\nTotal Bytes: " + Math.Ceiling((decimal)tempStr.Length/8) + tempStr);
+
+            //save to file
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.FileName = "Compressed.8bt";
+            saveFile.Filter = "Text files (*.8bt)|*.8bt|All files (*.*)|*.*";
+            if (saveFile.ShowDialog() == DialogResult.OK)
+            {
+                //MessageBox.Show("Save at " + saveFile.FileName);
+                Stream stream = new FileStream(saveFile.FileName, FileMode.Create);
+                BinaryWriter bw = new BinaryWriter(stream);
+                byte[] arr = StringToBytesArray(tempStr);
+                foreach (var b in arr)
+                {
+                    bw.Write(b);
+                }
+                bw.Flush();
+                bw.Close();
+            }
+        }
+
+        private string getPrefixCodeOfColorData(byte item)
+        {
+            foreach (HuffmanDictionary i in allPrefixCodes)
+            {
+                if (i.item == item)
+                {
+                    return i.prefixCode;
+                }
+            }
+            return "";
         }
 
         private void addColorOrIncreaseColorCount(Byte singleColor)
@@ -154,6 +224,83 @@ namespace _8BitBitmapCompression
                 tempString += e + "\n";
             }
             return tempString;
+        }
+
+        //from https://stackoverflow.com/questions/41778077/how-to-write-a-string-of-binary-to-file-c-sharp
+        private byte[] StringToBytesArray(string str)
+        {
+            Clipboard.SetText(str);
+            var bitsToPad = 8 - str.Length % 8;
+            if (bitsToPad != 8)
+            {
+                var neededLength = bitsToPad + str.Length;
+                str = str.PadRight(neededLength, '0');
+            }
+            int size = str.Length / 8;
+            byte[] arr = new byte[size];
+            for (int a = 0; a < size; a++)
+            {
+                arr[a] = Convert.ToByte(str.Substring(a * 8, 8), 2);
+            }
+            return arr;
+        }
+
+        private void extractBtn_Click(object sender, EventArgs e)
+        {
+            openFileForExtract.Filter = "8-bit Compressed Bitmap Files (*.8bt)|*.8bt|All files (*.*)|*.*";
+            openFileForExtract.FileName = "Compressed.8bt";
+            openFileForExtract.ShowDialog();
+        }
+
+        private void openFileForExtract_FileOk(object sender, CancelEventArgs e)
+        {
+            string readText, binaryFileStr = "";
+            try
+            {
+                readText = File.ReadAllText(openFileForExtract.FileName);
+                foreach (char c in readText)
+                {
+                    binaryFileStr += Convert.ToString(c, 2).PadLeft(8, '0');
+                }
+                processExtractedFile(binaryFileStr);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Something went wrong in reading the file;");
+            }
+        }
+
+        private void processExtractedFile(string binaryFileStr)
+        {
+            int width, height;
+            byte dictionarySize, colorData, prefixCodeLength;
+            string prefixCode;
+            List<HuffmanDictionary> extractedPrefixCodes = new List<HuffmanDictionary>();
+            //process first the first four bytes for width and height
+            width = Convert.ToInt32(binaryFileStr.Substring(0, 16), 2);
+            binaryFileStr = binaryFileStr.Remove(0, 16);
+            height = Convert.ToInt32(binaryFileStr.Substring(0, 16), 2);
+            binaryFileStr = binaryFileStr.Remove(0, 16);
+
+            //8 bit for the dictionary size
+            dictionarySize = Convert.ToByte(binaryFileStr.Substring(0, 8), 2);
+            binaryFileStr = binaryFileStr.Remove(0, 8);
+            MessageBox.Show("Dimensions: " + width + "x" + height + "\nDictionary Size: " + dictionarySize);
+
+            //iterate through the dictionary using the dictionarySize
+            for (int x=0; x<dictionarySize; x++)
+            {
+                //get first the color data (8 bits)
+                colorData = Convert.ToByte(binaryFileStr.Substring(0, 8), 2);
+                binaryFileStr = binaryFileStr.Remove(0, 8);
+                //4 bit for the length of the prefix code
+                prefixCodeLength = Convert.ToByte(binaryFileStr.Substring(0, 4), 2);
+                binaryFileStr = binaryFileStr.Remove(0, 4);
+                //then get the prefix code based on the prefixCodeLength
+                prefixCode = binaryFileStr.Substring(0, prefixCodeLength);
+                binaryFileStr = binaryFileStr.Remove(0, prefixCodeLength);
+                MessageBox.Show("Color Data: " + colorData + "\nPrefix Code Length: " + prefixCodeLength + "\nPrefix Code: " + prefixCode);
+            }
         }
     }
 

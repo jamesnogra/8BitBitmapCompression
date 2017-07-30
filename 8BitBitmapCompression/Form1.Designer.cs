@@ -36,8 +36,13 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.compressBtn = new System.Windows.Forms.Button();
+            this.extractedPic = new System.Windows.Forms.PictureBox();
+            this.extractBtn = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileForExtract = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.extractedPic)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -47,7 +52,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(345, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(669, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -107,11 +112,40 @@
             this.compressBtn.UseVisualStyleBackColor = false;
             this.compressBtn.Click += new System.EventHandler(this.compressBtn_Click);
             // 
+            // extractedPic
+            // 
+            this.extractedPic.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extractedPic.Location = new System.Drawing.Point(339, 71);
+            this.extractedPic.Name = "extractedPic";
+            this.extractedPic.Size = new System.Drawing.Size(320, 240);
+            this.extractedPic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.extractedPic.TabIndex = 3;
+            this.extractedPic.TabStop = false;
+            // 
+            // extractBtn
+            // 
+            this.extractBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extractBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.extractBtn.Location = new System.Drawing.Point(339, 29);
+            this.extractBtn.Name = "extractBtn";
+            this.extractBtn.Size = new System.Drawing.Size(320, 36);
+            this.extractBtn.TabIndex = 4;
+            this.extractBtn.Text = "Extract";
+            this.extractBtn.UseVisualStyleBackColor = false;
+            this.extractBtn.Click += new System.EventHandler(this.extractBtn_Click);
+            // 
+            // openFileForExtract
+            // 
+            this.openFileForExtract.FileName = "openFileDialog2";
+            this.openFileForExtract.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileForExtract_FileOk);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 324);
+            this.ClientSize = new System.Drawing.Size(669, 324);
+            this.Controls.Add(this.extractBtn);
+            this.Controls.Add(this.extractedPic);
             this.Controls.Add(this.compressBtn);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.menuStrip1);
@@ -123,6 +157,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.extractedPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,6 +173,10 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button compressBtn;
+        private System.Windows.Forms.PictureBox extractedPic;
+        private System.Windows.Forms.Button extractBtn;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileForExtract;
     }
 }
 
