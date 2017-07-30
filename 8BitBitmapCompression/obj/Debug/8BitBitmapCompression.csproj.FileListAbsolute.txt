@@ -1,0 +1,9 @@
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\bin\Debug\8BitBitmapCompression.exe.config
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\bin\Debug\8BitBitmapCompression.exe
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\bin\Debug\8BitBitmapCompression.pdb
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\obj\Debug\8BitBitmapCompression.csprojResolveAssemblyReference.cache
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\obj\Debug\_8BitBitmapCompression.Form1.resources
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\obj\Debug\_8BitBitmapCompression.Properties.Resources.resources
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\obj\Debug\8BitBitmapCompression.csproj.GenerateResource.Cache
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\obj\Debug\8BitBitmapCompression.exe
+c:\users\james\documents\visual studio 2017\VertexAndEdges\8BitBitmapCompression\8BitBitmapCompression\obj\Debug\8BitBitmapCompression.pdb
