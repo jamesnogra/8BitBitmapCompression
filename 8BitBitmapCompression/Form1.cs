@@ -24,6 +24,7 @@ namespace _8BitBitmapCompression
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            openFileDialog1 .Filter = "Bitmap files (*.bmp)|*.bmp|All files (*.*)|*.*";
             openFileDialog1.ShowDialog();
         }
 
@@ -109,7 +110,7 @@ namespace _8BitBitmapCompression
                 allPrefixCodes.Add(oneItem);
             }
             allPrefixCodes = allPrefixCodes.OrderByDescending(o => o.totalCount).ToList();
-            //MessageBox.Show(printAllHuffmanCodes());
+            MessageBox.Show(printAllHuffmanCodes());
         }
 
         //this will be called recursively, only stops when reaches the leaves
@@ -166,10 +167,11 @@ namespace _8BitBitmapCompression
                 Stream stream = new FileStream(saveFile.FileName, FileMode.Create);
                 BinaryWriter bw = new BinaryWriter(stream);
                 byte[] arr = StringToBytesArray(tempStr);
-                foreach (var b in arr)
+                /*foreach (byte b in arr)
                 {
-                    bw.Write(b);
-                }
+                    MessageBox.Show(b + "");
+                }*/
+                bw.Write(arr);
                 bw.Flush();
                 bw.Close();
             }
@@ -229,18 +231,19 @@ namespace _8BitBitmapCompression
         //from https://stackoverflow.com/questions/41778077/how-to-write-a-string-of-binary-to-file-c-sharp
         private byte[] StringToBytesArray(string str)
         {
-            Clipboard.SetText(str);
             var bitsToPad = 8 - str.Length % 8;
             if (bitsToPad != 8)
             {
                 var neededLength = bitsToPad + str.Length;
                 str = str.PadRight(neededLength, '0');
             }
+            Clipboard.SetText(str);
             int size = str.Length / 8;
             byte[] arr = new byte[size];
             for (int a = 0; a < size; a++)
             {
                 arr[a] = Convert.ToByte(str.Substring(a * 8, 8), 2);
+                //MessageBox.Show("At byte " + a + " is " + arr[a]);
             }
             return arr;
         }
@@ -257,9 +260,11 @@ namespace _8BitBitmapCompression
             string readText, binaryFileStr = "";
             try
             {
+                byte[] allBytes = System.IO.File.ReadAllBytes(openFileForExtract.FileName);
                 readText = File.ReadAllText(openFileForExtract.FileName);
-                foreach (char c in readText)
+                foreach (byte c in allBytes)
                 {
+                    //MessageBox.Show("Byte is " + c);
                     binaryFileStr += Convert.ToString(c, 2).PadLeft(8, '0');
                 }
                 processExtractedFile(binaryFileStr);
@@ -274,8 +279,10 @@ namespace _8BitBitmapCompression
         {
             int width, height;
             byte dictionarySize, colorData, prefixCodeLength;
-            string prefixCode;
+            string prefixCode, tempPrefixCodeLengthBinary, tempItemBinary;
             List<HuffmanDictionary> extractedPrefixCodes = new List<HuffmanDictionary>();
+            Bitmap extractedImage;
+
             //process first the first four bytes for width and height
             width = Convert.ToInt32(binaryFileStr.Substring(0, 16), 2);
             binaryFileStr = binaryFileStr.Remove(0, 16);
@@ -285,22 +292,75 @@ namespace _8BitBitmapCompression
             //8 bit for the dictionary size
             dictionarySize = Convert.ToByte(binaryFileStr.Substring(0, 8), 2);
             binaryFileStr = binaryFileStr.Remove(0, 8);
-            MessageBox.Show("Dimensions: " + width + "x" + height + "\nDictionary Size: " + dictionarySize);
+            //MessageBox.Show("Dimensions: " + width + "x" + height + "\nDictionary Size: " + dictionarySize);
 
             //iterate through the dictionary using the dictionarySize
             for (int x=0; x<dictionarySize; x++)
             {
                 //get first the color data (8 bits)
                 colorData = Convert.ToByte(binaryFileStr.Substring(0, 8), 2);
+                tempItemBinary = binaryFileStr.Substring(0, 8);
                 binaryFileStr = binaryFileStr.Remove(0, 8);
                 //4 bit for the length of the prefix code
                 prefixCodeLength = Convert.ToByte(binaryFileStr.Substring(0, 4), 2);
+                tempPrefixCodeLengthBinary = binaryFileStr.Substring(0, 4);
                 binaryFileStr = binaryFileStr.Remove(0, 4);
                 //then get the prefix code based on the prefixCodeLength
                 prefixCode = binaryFileStr.Substring(0, prefixCodeLength);
                 binaryFileStr = binaryFileStr.Remove(0, prefixCodeLength);
-                MessageBox.Show("Color Data: " + colorData + "\nPrefix Code Length: " + prefixCodeLength + "\nPrefix Code: " + prefixCode);
+                extractedPrefixCodes.Add(new HuffmanDictionary(colorData, prefixCode, 0));
+                //MessageBox.Show("Color Data: " + colorData + " From ("+ tempItemBinary + ")" + "\nPrefix Code Length: " + prefixCodeLength + " (From "+ tempPrefixCodeLengthBinary + ") " + "\nPrefix Code: " + prefixCode);
             }
+
+            //put the pixels of the image back
+            bool prefixCodeFound;
+            byte eRed, eGreen, eBlue;
+            byte[] rgbColors = new byte[3];
+            int byteFound;
+            extractedImage = new Bitmap(width, height);
+            for (int x=0; x<width; x++)
+            {
+                for (int y=0; y<height; y++)
+                {
+                    for (int z=0; z<3; z++) //this is for RGB
+                    {
+                        //this is for RED
+                        prefixCodeFound = false;
+                        prefixCodeLength = 1;
+                        while (!prefixCodeFound)
+                        {
+                            prefixCode = binaryFileStr.Substring(0, prefixCodeLength);
+                            byteFound = matchPrefixCodeWithColorData(extractedPrefixCodes, prefixCode);
+                            if (byteFound != -1)
+                            {
+                                rgbColors[z] = (byte)byteFound;
+                                //MessageBox.Show("Found " + eRed);
+                                prefixCodeFound = true;
+                                binaryFileStr = binaryFileStr.Remove(0, prefixCodeLength);
+                            }
+                            else
+                            {
+                                prefixCodeLength++;
+                            }
+                        }
+                    }
+                    extractedImage.SetPixel(x, y, Color.FromArgb(rgbColors[0], rgbColors[1], rgbColors[2]));
+                    //MessageBox.Show("Colors: ("+ rgbColors[0] + "," + rgbColors[1] + "," + rgbColors[2] + ")");
+                }
+            }
+            extractedPicBox.Image = extractedImage;
+        }
+
+        private int matchPrefixCodeWithColorData(List<HuffmanDictionary> tempList, string prefixCode)
+        {
+            foreach (HuffmanDictionary a in tempList)
+            {
+                if (a.prefixCode == prefixCode)
+                {
+                    return a.item;
+                }
+            }
+            return -1;
         }
     }
 

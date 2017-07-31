@@ -36,13 +36,13 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.compressBtn = new System.Windows.Forms.Button();
-            this.extractedPic = new System.Windows.Forms.PictureBox();
+            this.extractedPicBox = new System.Windows.Forms.PictureBox();
             this.extractBtn = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileForExtract = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.extractedPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.extractedPicBox)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -112,15 +112,15 @@
             this.compressBtn.UseVisualStyleBackColor = false;
             this.compressBtn.Click += new System.EventHandler(this.compressBtn_Click);
             // 
-            // extractedPic
+            // extractedPicBox
             // 
-            this.extractedPic.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extractedPic.Location = new System.Drawing.Point(339, 71);
-            this.extractedPic.Name = "extractedPic";
-            this.extractedPic.Size = new System.Drawing.Size(320, 240);
-            this.extractedPic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.extractedPic.TabIndex = 3;
-            this.extractedPic.TabStop = false;
+            this.extractedPicBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extractedPicBox.Location = new System.Drawing.Point(339, 71);
+            this.extractedPicBox.Name = "extractedPicBox";
+            this.extractedPicBox.Size = new System.Drawing.Size(320, 240);
+            this.extractedPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.extractedPicBox.TabIndex = 3;
+            this.extractedPicBox.TabStop = false;
             // 
             // extractBtn
             // 
@@ -145,7 +145,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(669, 324);
             this.Controls.Add(this.extractBtn);
-            this.Controls.Add(this.extractedPic);
+            this.Controls.Add(this.extractedPicBox);
             this.Controls.Add(this.compressBtn);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.menuStrip1);
@@ -157,7 +157,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.extractedPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.extractedPicBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,7 +173,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button compressBtn;
-        private System.Windows.Forms.PictureBox extractedPic;
+        private System.Windows.Forms.PictureBox extractedPicBox;
         private System.Windows.Forms.Button extractBtn;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileForExtract;
