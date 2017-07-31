@@ -143,7 +143,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(669, 324);
+            this.ClientSize = new System.Drawing.Size(669, 323);
             this.Controls.Add(this.extractBtn);
             this.Controls.Add(this.extractedPicBox);
             this.Controls.Add(this.compressBtn);

@@ -16,6 +16,7 @@ namespace _8BitBitmapCompression
         Bitmap mainImage;
         List<ColorData> allColors;
         List<HuffmanDictionary> allPrefixCodes;
+        SaveFileDialog saveFile;
 
         public Form1()
         {
@@ -43,24 +44,32 @@ namespace _8BitBitmapCompression
         {
             try
             {
-                allColors = new List<ColorData>();
-                Color tempColor;
-
-                //iterate to the whole image (widthxheight)
-                for (int x = 0; x < mainImage.Width; x++)
+                //save to file
+                saveFile = new SaveFileDialog();
+                saveFile.FileName = "Compressed.8bt";
+                saveFile.Filter = "Text files (*.8bt)|*.8bt|All files (*.*)|*.*";
+                if (saveFile.ShowDialog() == DialogResult.OK)
                 {
-                    for (int y = 0; y < mainImage.Height; y++)
+                    allColors = new List<ColorData>();
+                    Color tempColor;
+
+                    //iterate to the whole image (widthxheight)
+                    for (int x = 0; x < mainImage.Width; x++)
                     {
-                        tempColor = mainImage.GetPixel(x, y);
-                        addColorOrIncreaseColorCount(tempColor.R);
-                        addColorOrIncreaseColorCount(tempColor.G);
-                        addColorOrIncreaseColorCount(tempColor.B);
+                        for (int y = 0; y < mainImage.Height; y++)
+                        {
+                            tempColor = mainImage.GetPixel(x, y);
+                            addColorOrIncreaseColorCount(tempColor.R);
+                            addColorOrIncreaseColorCount(tempColor.G);
+                            addColorOrIncreaseColorCount(tempColor.B);
+                        }
                     }
+                    allColors = allColors.OrderBy(o => o.count).ToList();
+                    createHuffmanTree();
+                    //MessageBox.Show(printAllIAllColors());
+                    createCompressedFile();
                 }
-                allColors = allColors.OrderBy(o => o.count).ToList();
-                createHuffmanTree();
-                //MessageBox.Show(printAllIAllColors());
-                createCompressedFile();
+                    
             }
             catch (Exception err)
             {
@@ -110,7 +119,7 @@ namespace _8BitBitmapCompression
                 allPrefixCodes.Add(oneItem);
             }
             allPrefixCodes = allPrefixCodes.OrderByDescending(o => o.totalCount).ToList();
-            MessageBox.Show(printAllHuffmanCodes());
+            //MessageBox.Show(printAllHuffmanCodes());
         }
 
         //this will be called recursively, only stops when reaches the leaves
@@ -134,7 +143,7 @@ namespace _8BitBitmapCompression
             tempStr += Convert.ToString(mainImage.Width, 2).PadLeft(16, '0'); //16 bit for width
             tempStr += Convert.ToString(mainImage.Height, 2).PadLeft(16, '0'); //16 bit for height
             tempStr += Convert.ToString(allPrefixCodes.Count, 2).PadLeft(8, '0'); //8 bit for size of dictionary
-
+            
             //iterate through the prefix codes for dictionary
             foreach (HuffmanDictionary i in allPrefixCodes)
             {
@@ -156,25 +165,21 @@ namespace _8BitBitmapCompression
                 }
             }
             //MessageBox.Show("Total Length: " + tempStr.Length + "\nTotal Bytes: " + Math.Ceiling((decimal)tempStr.Length/8) + tempStr);
-
+            
             //save to file
-            SaveFileDialog saveFile = new SaveFileDialog();
+            /*SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.FileName = "Compressed.8bt";
             saveFile.Filter = "Text files (*.8bt)|*.8bt|All files (*.*)|*.*";
             if (saveFile.ShowDialog() == DialogResult.OK)
-            {
+            {*/
                 //MessageBox.Show("Save at " + saveFile.FileName);
                 Stream stream = new FileStream(saveFile.FileName, FileMode.Create);
                 BinaryWriter bw = new BinaryWriter(stream);
                 byte[] arr = StringToBytesArray(tempStr);
-                /*foreach (byte b in arr)
-                {
-                    MessageBox.Show(b + "");
-                }*/
                 bw.Write(arr);
                 bw.Flush();
                 bw.Close();
-            }
+            //}
         }
 
         private string getPrefixCodeOfColorData(byte item)
