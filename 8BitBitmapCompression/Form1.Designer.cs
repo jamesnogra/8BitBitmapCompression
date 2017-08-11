@@ -40,6 +40,12 @@
             this.extractBtn = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileForExtract = new System.Windows.Forms.OpenFileDialog();
+            this.resultOriginalFileSize = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.resultCompressedFileSize = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.resultDuration = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.extractedPicBox)).BeginInit();
@@ -139,11 +145,65 @@
             this.openFileForExtract.FileName = "openFileDialog2";
             this.openFileForExtract.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileForExtract_FileOk);
             // 
+            // resultOriginalFileSize
+            // 
+            this.resultOriginalFileSize.Location = new System.Drawing.Point(103, 321);
+            this.resultOriginalFileSize.Name = "resultOriginalFileSize";
+            this.resultOriginalFileSize.Size = new System.Drawing.Size(97, 20);
+            this.resultOriginalFileSize.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 324);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Original File Size";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(226, 324);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(107, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Compressed File Size";
+            // 
+            // resultCompressedFileSize
+            // 
+            this.resultCompressedFileSize.Location = new System.Drawing.Point(339, 321);
+            this.resultCompressedFileSize.Name = "resultCompressedFileSize";
+            this.resultCompressedFileSize.Size = new System.Drawing.Size(128, 20);
+            this.resultCompressedFileSize.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(498, 324);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(47, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Duration";
+            // 
+            // resultDuration
+            // 
+            this.resultDuration.Location = new System.Drawing.Point(551, 321);
+            this.resultDuration.Name = "resultDuration";
+            this.resultDuration.Size = new System.Drawing.Size(108, 20);
+            this.resultDuration.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(669, 323);
+            this.ClientSize = new System.Drawing.Size(669, 349);
+            this.Controls.Add(this.resultDuration);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.resultCompressedFileSize);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.resultOriginalFileSize);
             this.Controls.Add(this.extractBtn);
             this.Controls.Add(this.extractedPicBox);
             this.Controls.Add(this.compressBtn);
@@ -177,6 +237,12 @@
         private System.Windows.Forms.Button extractBtn;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileForExtract;
+        private System.Windows.Forms.TextBox resultOriginalFileSize;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox resultCompressedFileSize;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox resultDuration;
     }
 }
 

@@ -17,6 +17,9 @@ namespace _8BitBitmapCompression
         List<ColorData> allColors;
         List<HuffmanDictionary> allPrefixCodes;
         SaveFileDialog saveFile;
+        float originalFileSize;
+        DateTime start, end;
+        byte[] arr;
 
         public Form1()
         {
@@ -32,6 +35,8 @@ namespace _8BitBitmapCompression
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             mainImage = new Bitmap(openFileDialog1.FileName);
+            var fileInfo = new FileInfo(openFileDialog1.FileName);
+            originalFileSize = fileInfo.Length;
             pictureBox.Image = mainImage;
         }
 
@@ -50,6 +55,7 @@ namespace _8BitBitmapCompression
                 saveFile.Filter = "Text files (*.8bt)|*.8bt|All files (*.*)|*.*";
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
+                    start = DateTime.UtcNow;
                     allColors = new List<ColorData>();
                     Color tempColor;
 
@@ -66,8 +72,12 @@ namespace _8BitBitmapCompression
                     }
                     allColors = allColors.OrderBy(o => o.count).ToList();
                     createHuffmanTree();
-                    //MessageBox.Show(printAllIAllColors());
                     createCompressedFile();
+                    end = DateTime.UtcNow;
+                    var lapseTime = Math.Abs((end - start).TotalSeconds);
+                    resultOriginalFileSize.Text = Convert.ToString(originalFileSize);
+                    resultCompressedFileSize.Text = Convert.ToString(arr.Length);
+                    resultDuration.Text = Convert.ToString(lapseTime);
                 }
                     
             }
@@ -164,22 +174,12 @@ namespace _8BitBitmapCompression
                     tempStr += getPrefixCodeOfColorData(tempColor.B);
                 }
             }
-            //MessageBox.Show("Total Length: " + tempStr.Length + "\nTotal Bytes: " + Math.Ceiling((decimal)tempStr.Length/8) + tempStr);
-            
-            //save to file
-            /*SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.FileName = "Compressed.8bt";
-            saveFile.Filter = "Text files (*.8bt)|*.8bt|All files (*.*)|*.*";
-            if (saveFile.ShowDialog() == DialogResult.OK)
-            {*/
-                //MessageBox.Show("Save at " + saveFile.FileName);
-                Stream stream = new FileStream(saveFile.FileName, FileMode.Create);
-                BinaryWriter bw = new BinaryWriter(stream);
-                byte[] arr = StringToBytesArray(tempStr);
-                bw.Write(arr);
-                bw.Flush();
-                bw.Close();
-            //}
+            Stream stream = new FileStream(saveFile.FileName, FileMode.Create);
+            BinaryWriter bw = new BinaryWriter(stream);
+            arr = StringToBytesArray(tempStr);
+            bw.Write(arr);
+            bw.Flush();
+            bw.Close();
         }
 
         private string getPrefixCodeOfColorData(byte item)
@@ -265,6 +265,7 @@ namespace _8BitBitmapCompression
             string readText, binaryFileStr = "";
             try
             {
+                start = DateTime.UtcNow;
                 byte[] allBytes = System.IO.File.ReadAllBytes(openFileForExtract.FileName);
                 readText = File.ReadAllText(openFileForExtract.FileName);
                 foreach (byte c in allBytes)
@@ -273,6 +274,9 @@ namespace _8BitBitmapCompression
                     binaryFileStr += Convert.ToString(c, 2).PadLeft(8, '0');
                 }
                 processExtractedFile(binaryFileStr);
+                end = DateTime.UtcNow;
+                var lapseTime = Math.Abs((end - start).TotalSeconds);
+                resultDuration.Text = Convert.ToString(lapseTime);
             }
             catch (IOException)
             {
