@@ -46,6 +46,8 @@
             this.resultCompressedFileSize = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.resultDuration = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.extractedPicBox)).BeginInit();
@@ -58,7 +60,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(669, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(512, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -99,9 +101,9 @@
             // pictureBox
             // 
             this.pictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.pictureBox.Location = new System.Drawing.Point(13, 28);
+            this.pictureBox.Location = new System.Drawing.Point(13, 61);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(320, 240);
+            this.pictureBox.Size = new System.Drawing.Size(240, 240);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
@@ -110,9 +112,9 @@
             // 
             this.compressBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.compressBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.compressBtn.Location = new System.Drawing.Point(13, 275);
+            this.compressBtn.Location = new System.Drawing.Point(13, 308);
             this.compressBtn.Name = "compressBtn";
-            this.compressBtn.Size = new System.Drawing.Size(320, 36);
+            this.compressBtn.Size = new System.Drawing.Size(240, 36);
             this.compressBtn.TabIndex = 2;
             this.compressBtn.Text = "Compress";
             this.compressBtn.UseVisualStyleBackColor = false;
@@ -121,9 +123,9 @@
             // extractedPicBox
             // 
             this.extractedPicBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extractedPicBox.Location = new System.Drawing.Point(339, 71);
+            this.extractedPicBox.Location = new System.Drawing.Point(259, 61);
             this.extractedPicBox.Name = "extractedPicBox";
-            this.extractedPicBox.Size = new System.Drawing.Size(320, 240);
+            this.extractedPicBox.Size = new System.Drawing.Size(240, 240);
             this.extractedPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.extractedPicBox.TabIndex = 3;
             this.extractedPicBox.TabStop = false;
@@ -132,9 +134,9 @@
             // 
             this.extractBtn.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.extractBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.extractBtn.Location = new System.Drawing.Point(339, 29);
+            this.extractBtn.Location = new System.Drawing.Point(259, 307);
             this.extractBtn.Name = "extractBtn";
-            this.extractBtn.Size = new System.Drawing.Size(320, 36);
+            this.extractBtn.Size = new System.Drawing.Size(240, 36);
             this.extractBtn.TabIndex = 4;
             this.extractBtn.Text = "Extract";
             this.extractBtn.UseVisualStyleBackColor = false;
@@ -147,15 +149,15 @@
             // 
             // resultOriginalFileSize
             // 
-            this.resultOriginalFileSize.Location = new System.Drawing.Point(103, 321);
+            this.resultOriginalFileSize.Location = new System.Drawing.Point(103, 354);
             this.resultOriginalFileSize.Name = "resultOriginalFileSize";
-            this.resultOriginalFileSize.Size = new System.Drawing.Size(97, 20);
+            this.resultOriginalFileSize.Size = new System.Drawing.Size(70, 20);
             this.resultOriginalFileSize.TabIndex = 5;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 324);
+            this.label1.Location = new System.Drawing.Point(13, 357);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 6;
@@ -164,7 +166,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(226, 324);
+            this.label2.Location = new System.Drawing.Point(191, 357);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(107, 13);
             this.label2.TabIndex = 7;
@@ -172,15 +174,15 @@
             // 
             // resultCompressedFileSize
             // 
-            this.resultCompressedFileSize.Location = new System.Drawing.Point(339, 321);
+            this.resultCompressedFileSize.Location = new System.Drawing.Point(304, 354);
             this.resultCompressedFileSize.Name = "resultCompressedFileSize";
-            this.resultCompressedFileSize.Size = new System.Drawing.Size(128, 20);
+            this.resultCompressedFileSize.Size = new System.Drawing.Size(70, 20);
             this.resultCompressedFileSize.TabIndex = 8;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(498, 324);
+            this.label3.Location = new System.Drawing.Point(402, 357);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 13);
             this.label3.TabIndex = 9;
@@ -188,16 +190,38 @@
             // 
             // resultDuration
             // 
-            this.resultDuration.Location = new System.Drawing.Point(551, 321);
+            this.resultDuration.Location = new System.Drawing.Point(455, 354);
             this.resultDuration.Name = "resultDuration";
-            this.resultDuration.Size = new System.Drawing.Size(108, 20);
+            this.resultDuration.Size = new System.Drawing.Size(44, 20);
             this.resultDuration.TabIndex = 10;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(53, 33);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(164, 25);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Original Image";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(288, 33);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(182, 25);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Extracted Image";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(669, 349);
+            this.ClientSize = new System.Drawing.Size(512, 383);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.resultDuration);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.resultCompressedFileSize);
@@ -243,6 +267,8 @@
         private System.Windows.Forms.TextBox resultCompressedFileSize;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox resultDuration;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
 
